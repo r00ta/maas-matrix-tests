@@ -1,0 +1,15 @@
+name: MAAS e2e on Ubuntu
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup and test
+        run: |
+          chmod +x run.sh
+          ./run.sh
