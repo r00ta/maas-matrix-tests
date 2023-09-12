@@ -2,7 +2,7 @@
 
 # FUNCTIONS 
 get_first_system_id_with_timeout() {
-    local max_wait_time=600
+    local max_wait_time=300
     local sleep_interval=10
     local elapsed_time=0
     local system_ids
@@ -26,7 +26,7 @@ get_first_system_id_with_timeout() {
 wait_for_status() {
     local system_id="$1"
     local status="$2"
-    local max_wait_time=600
+    local max_wait_time=300
     local sleep_interval=10
     local elapsed_time=0
 
@@ -59,7 +59,6 @@ echo "Configuring database.."
 MAAS_DBUSER=maas
 MAAS_DBPASS=maas
 MAAS_DBNAME=maasdb
-HOSTNAME=localhost
 
 # LXD setup
 echo "Configuring lxd.."
@@ -73,7 +72,7 @@ lxc config device add vm01 eth0 nic network=net-test name=eth0  boot.priority=10
 # Install and configure maas
 echo "Installing and configuring maas.."
 sudo snap install --channel=latest/edge maas
-sudo maas init region+rack --maas-url http://localhost:5240/MAAS --database-uri "postgres://$MAAS_DBUSER:$MAAS_DBPASS@$HOSTNAME/$MAAS_DBNAME"
+sudo maas init region+rack --maas-url http://localhost:5240/MAAS --database-uri "postgres://$MAAS_DBUSER:$MAAS_DBPASS@postgres/$MAAS_DBNAME"
 sudo maas createadmin --username maas --password maas --email test@example.com
 sudo maas apikey --username=maas > /tmp/api-key-file
 maas login admin http://localhost:5240/MAAS `cat /tmp/api-key-file`
