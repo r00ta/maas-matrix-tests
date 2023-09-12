@@ -72,7 +72,7 @@ lxc config device add vm01 eth0 nic network=net-test name=eth0  boot.priority=10
 # Install and configure maas
 echo "Installing and configuring maas.."
 sudo snap install --channel=latest/edge maas
-sudo maas init region+rack --maas-url http://localhost:5240/MAAS --database-uri "postgres://$MAAS_DBUSER:$MAAS_DBPASS@postgres/$MAAS_DBNAME"
+sudo maas init region+rack --maas-url http://localhost:5240/MAAS --database-uri "postgres://$MAAS_DBUSER:$MAAS_DBPASS@localhost/$MAAS_DBNAME"
 sudo maas createadmin --username maas --password maas --email test@example.com
 sudo maas apikey --username=maas > /tmp/api-key-file
 maas login admin http://localhost:5240/MAAS `cat /tmp/api-key-file`
