@@ -54,18 +54,12 @@ sudo apt-get update
 echo "Installing utilities.."
 sudo snap install jq
 
-# Install postgres
-echo "Installing postgres.."
-sudo apt-get install -y postgresql
-
 # Configure postgres and create database
 echo "Configuring database.."
 MAAS_DBUSER=maas
 MAAS_DBPASS=maas
 MAAS_DBNAME=maasdb
 HOSTNAME=localhost
-sudo -i -u postgres psql -c "CREATE USER \"$MAAS_DBUSER\" WITH ENCRYPTED PASSWORD '$MAAS_DBPASS'"
-sudo -i -u postgres createdb -O "$MAAS_DBUSER" "$MAAS_DBNAME"
 
 # LXD setup
 echo "Configuring lxd.."
