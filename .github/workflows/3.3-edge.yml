@@ -1,0 +1,10 @@
+name: MAAS e2e on Ubuntu for 3.3 edge
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/base_e2e_workflow.yml
+    with:
+      maas-snap-version: 3.3/edge
