@@ -89,4 +89,4 @@ else
     exit 1
 fi
 
-ssh -o StrictHostKeyChecking=no ubuntu@12.0.1.2 -i /tmp/maas/id_rsa id
+# ssh -o StrictHostKeyChecking=no ubuntu@12.0.1.2 -i /tmp/maas/id_rsa id
