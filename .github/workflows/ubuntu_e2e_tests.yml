@@ -5,35 +5,12 @@ on:
 
 jobs:
   build:
-    services:
-      postgres:
-        image: postgres
-  
-        env:
-          POSTGRES_PASSWORD: maas
-          POSTGRES_USER: maas
-          POSTGRES_DB: maasdb
-  
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
-      - name: Enable KVM group perms
-        run: |
-            echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-            sudo udevadm control --reload-rules
-            sudo udevadm trigger --name-match=kvm
-      - name: Setup LXD
-        uses: canonical/setup-lxd@v0.1.1
-        with:
-          channel: latest/stable
-      - name: Setup and test
-        run: |
-          chmod +x run.sh
-          ./run.sh
+      - name: Setup
+        run: make prepare
+      - name: Test
+        run: make test
+      - name: Clean
+        run: make clean
