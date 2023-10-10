@@ -14,10 +14,10 @@ jobs:
       - name: Setup
         env:
           MAAS_VERSION: ${{ matrix.snap-version }}
-        run: sudo -i make prepare
+        run: make prepare
       - name: Test
         run: make test
       - name: Clean
         if: always()        
         continue-on-error: true        
-        run: sudo -i make clean
+        run: make clean
