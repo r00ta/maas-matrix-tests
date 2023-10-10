@@ -1,4 +1,4 @@
-name: MAAS e2e on Ubuntu for 3.3 edge
+name: 3.3 edge
 
 on:
   workflow_dispatch:
