@@ -4,7 +4,7 @@ echo "Installing LXD.."
 sudo snap install --channel=latest/stable lxd
 
 echo "Configuring LXD.."
-lxd init --auto
+sudo lxd init --auto
 lxc network create net-test --type=bridge ipv4.address=12.0.1.1/24 ipv4.dhcp=false ipv6.address=none
 
 echo "Creating empty LXD VM.."
