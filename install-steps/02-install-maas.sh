@@ -46,7 +46,7 @@ echo "Extracting fabric id.."
 export FABRIC_ID=$(maas admin subnet read "$SUBNET" | jq -r ".vlan.fabric_id")
 echo "Extracting vlan tag id.."
 export VLAN_TAG=$(maas admin subnet read "$SUBNET" | jq -r ".vlan.vid")
-cho "Updating subnet.."
+echo "Updating subnet.."
 maas admin subnet update $SUBNET gateway_ip=12.0.1.1
 maas admin ipranges create type=dynamic start_ip=12.0.1.200 end_ip=12.0.1.254
 maas admin vlan update $FABRIC_ID $VLAN_TAG dhcp_on=True primary_rack=$PRIMARY_RACK
