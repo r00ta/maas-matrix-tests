@@ -65,11 +65,10 @@ else
 fi
 
 echo $MACHINE_SYSTEM_ID
-maas admin machine update $MACHINE_SYSTEM_ID power_type=manual
+maas admin machine update $MACHINE_SYSTEM_ID power_type=lxd power_parameters_power_address=12.0.1.1 power_parameters_instance_name=vm01 power_parameters_password=fuffapassword
 
 echo "Start commissioning"
 maas admin machine commission $MACHINE_SYSTEM_ID
-lxc start vm01
 
 if wait_for_status "$MACHINE_SYSTEM_ID" "Ready"; then
     echo "Status is Ready!."
@@ -80,7 +79,6 @@ fi
 
 echo "Start deployment"
 maas admin machine deploy $MACHINE_SYSTEM_ID
-lxc start vm01
 
 if wait_for_status "$MACHINE_SYSTEM_ID" "Deployed"; then
     echo "Status is Deployed."
