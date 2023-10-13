@@ -8,6 +8,9 @@ on:
         required: true
         type: string
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: self-hosted
@@ -33,12 +36,9 @@ jobs:
           TEST_OUTCOME: ${{ steps.tests.outcome }}
         run: |
           python3 .github/update-badge.py $MAAS_VERSION $TEST_RESULT_FILENAME "`snap info maas | grep -w '3.4/beta:' | awk '{print $2 " released at " $3 " tested at " strftime("%Y-%m-%d")}'`" $TEST_OUTCOME
-      - name: Commit report 
-        uses: devops-infra/action-commit-push@master
-        with:
-          github_token: "${{ secrets.GITHUB_TOKEN }}"
-          add_timestamp: true
-          commit_prefix: "[AUTO]"
-          commit_message: "Push test report"
-          force: false
-          target_branch: main
+          git config --global user.name "r00ta bot"
+          git config --global user.email "jacopo.r00ta@gmail.com"
+          git add .test-results
+          git commit -m '[AUTO] publish test results'
+          git push
+          
