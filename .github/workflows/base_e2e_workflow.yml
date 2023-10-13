@@ -17,25 +17,25 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
-      #- name: Setup
-      #  env:
-      #    MAAS_VERSION: ${{ inputs.maas-snap-version }}
-      #  run: make prepare
+      - name: Setup
+        env:
+          MAAS_VERSION: ${{ inputs.maas-snap-version }}
+        run: make prepare
       - name: Test
         id: tests
-        run: printf "pippo" #make test
-      #- name: Clean
-      #  if: always()        
-      #  continue-on-error: true        
-      #  run: make clean
-      - name: Update ok badge
+        run: make test
+      - name: Clean
+        if: always()        
+        continue-on-error: true        
+        run: make clean
+      - name: Update test results badges
         if: always()
         env:
           MAAS_VERSION: ${{ inputs.maas-snap-version }}
           TEST_RESULT_FILENAME: ${{ inputs.test-result-filename }}
           TEST_OUTCOME: ${{ steps.tests.outcome }}
         run: |
-          python3 .github/update-badge.py $MAAS_VERSION $TEST_RESULT_FILENAME "`snap info maas | grep -w '3.4/beta:' | awk '{print $2 " released at " $3 " tested at " strftime("%Y-%m-%d")}'`" $TEST_OUTCOME
+          python3 .github/update-badge.py $MAAS_VERSION $TEST_RESULT_FILENAME "`snap info maas | grep -w "$MAAS_VERSION:" | awk '{print $2 " released at " $3 " tested at " strftime("%Y-%m-%d")}'`" $TEST_OUTCOME
           git config --global user.name "r00ta bot"
           git config --global user.email "jacopo.r00ta@gmail.com"
           git add .test-results
