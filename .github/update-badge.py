@@ -8,12 +8,12 @@ if __name__ == '__main__':
     snap_version = sys.argv[1]
     test_result_filename = sys.argv[2]
     message = sys.argv[3]
-    success = sys.argv[4]
+    test_outcome = sys.argv[4]
     file = test_results_path + "/" + test_result_filename   
     with open(file, "r") as f:
         data = json.loads(f.read())
         print("I've read'" + json.dumps(data) + "' from the file " + file)
-        data["color"] = "green" if success == "true" else "red"
+        data["color"] = "green" if test_outcome == "success" else "red"
         data["message"] = message
     with open(file, "w") as f:
         print("Writing '" + json.dumps(data) + "' to the file " + file)

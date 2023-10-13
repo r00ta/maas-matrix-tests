@@ -29,10 +29,9 @@ jobs:
         env:
           MAAS_VERSION: ${{ inputs.maas-snap-version }}
           TEST_RESULT_FILENAME: ${{ inputs.test-result-filename }}
-          TEST_RESULT: ${{ success() }}
+          TEST_OUTCOME: ${{ steps.Test.outcome }}
         run: |
-          python3 .github/update-badge.py $MAAS_VERSION $TEST_RESULT_FILENAME `snap info maas | grep -w "'3.4/beta:' | awk '{print $2 " released at " $3 " tested at " strftime("%Y-%m-%d")}'`" $TEST_RESULT
-                - name: Commit report
+          python3 .github/update-badge.py $MAAS_VERSION $TEST_RESULT_FILENAME `snap info maas | grep -w "'3.4/beta:' | awk '{print $2 " released at " $3 " tested at " strftime("%Y-%m-%d")}'`" $TEST_OUTCOME
           git config --global user.name 'r00ta bot'
           git config --global user.email 'r00tabot@example.com'
           git add .test-results
