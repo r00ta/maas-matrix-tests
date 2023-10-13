@@ -1,6 +1,9 @@
 on:
   workflow_call:
     inputs:
+      plaintext-version:
+        required: true
+        type: string
       maas-snap-version:
         required: true
         type: string
@@ -27,9 +30,9 @@ jobs:
         with:
           auth: ${{ secrets.GIST_SECRET }}
           gistID: a3112d7741968f0e37f9984d65cf4e24
-          filename: ${{ inputs.maas-snap-version }}.json 
+          filename: ${{ inputs.plaintext-version }}.json 
           label: ${{ inputs.maas-snap-version }}
-          message: World
+          message: ok
           color: green
       - name: Update fail badge
         if: failure() || cancelled()
@@ -37,7 +40,7 @@ jobs:
         with:
           auth: ${{ secrets.GIST_SECRET }}
           gistID: a3112d7741968f0e37f9984d65cf4e24
-          filename: ${{ inputs.maas-snap-version }}.json 
+          filename: ${{ inputs.plaintext-version }}.json 
           label: ${{ inputs.maas-snap-version }}
-          message: World
+          message: fail
           color: red
