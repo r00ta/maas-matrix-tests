@@ -7,5 +7,5 @@ jobs:
   build:
     uses: ./.github/workflows/base_e2e_workflow.yml
     with:
-      plaintext-version: 3.3-edge
+      test-result-filename: 3.3-edge.json
       maas-snap-version: 3.3/edge
