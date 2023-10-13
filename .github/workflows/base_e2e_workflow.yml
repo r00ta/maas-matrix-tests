@@ -26,7 +26,7 @@ jobs:
         run: make clean
       - name: Update ok badge
         if: success()
-        uses: schneegans/dynamic-badges-action@v1.6.0
+        uses: schneegans/dynamic-badges-action@v1.5.0
         with:
           auth: ${{ secrets.GIST_SECRET }}
           gistID: a3112d7741968f0e37f9984d65cf4e24
@@ -36,7 +36,7 @@ jobs:
           color: green
       - name: Update fail badge
         if: failure() || cancelled()
-        uses: schneegans/dynamic-badges-action@v1.6.0
+        uses: schneegans/dynamic-badges-action@v1.5.0
         with:
           auth: ${{ secrets.GIST_SECRET }}
           gistID: a3112d7741968f0e37f9984d65cf4e24
