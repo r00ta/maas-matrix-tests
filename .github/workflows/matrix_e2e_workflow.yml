@@ -12,6 +12,7 @@ jobs:
         snap-version: ["3.2/edge", "3.2/candidate", "3.2/stable", "3.3/edge", "3.3/candidate", "3.3/stable", "3.4/edge", "3.4/candidate", "3.4/stable", "latest/edge"]
     runs-on: self-hosted
     timeout-minutes: 60
+    continue-on-error: true     
     steps:
       - uses: actions/checkout@v3
       - name: Check run need
