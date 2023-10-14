@@ -21,20 +21,20 @@ jobs:
         # run-checker prints "run=true" or "run=false"
         run: python3 .github/run-checker.py $MAAS_VERSION `snap info maas | grep -w "$MAAS_VERSION:" | awk '{print $3}'` >> $GITHUB_OUTPUT
       - name: Setup
-        if: ${{ steps.required.output.run }} == "true"        
+        if: steps.required.output.run == "true"        
         env:
           MAAS_VERSION: ${{ matrix.snap-version }}
         run: make prepare
       - name: Test
-        if: ${{ steps.required.output.run }} == "true"        
+        if: steps.required.output.run == "true"        
         id: tests
         run: make test
       - name: Clean
-        if: always()       
+        if: steps.required.output.run == "true"        
         continue-on-error: true        
         run: make clean
       - name: Update test results badges
-        if: ${{ steps.required.output.run }} == "true"
+        if: steps.required.output.run == "true"        
         env:
           MAAS_VERSION: ${{ matrix.snap-version }}
           TEST_OUTCOME: ${{ steps.tests.outcome }}
