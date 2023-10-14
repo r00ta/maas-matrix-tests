@@ -6,10 +6,9 @@ test_results_path = os.path.dirname(os.path.realpath(__file__)).replace(".github
 print(test_results_path)
 if __name__ == '__main__':
     snap_version = sys.argv[1]
-    test_result_filename = sys.argv[2]
-    message = sys.argv[3]
-    test_outcome = sys.argv[4]
-    file = test_results_path + "/" + test_result_filename   
+    message = sys.argv[2]
+    test_outcome = sys.argv[3]
+    file = test_results_path + "/" + snap_version.replace("/", "-") + ".json"   
     with open(file, "r") as f:
         data = json.loads(f.read())
         print("I've read'" + json.dumps(data) + "' from the file " + file)

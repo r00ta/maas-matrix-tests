@@ -1,0 +1,48 @@
+on:
+  workflow_call:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        snap-version: ["3.2/edge", "3.2/candidate", "3.2/stable", "3.3/edge", "3.3/candidate", "3.3/stable", "3.4/edge", "3.4/candidate", "3.4/stable", "latest/edge"]
+    runs-on: self-hosted
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v3
+      - name: Check run need
+        id: required
+        env:
+          MAAS_VERSION: ${{ matrix.snap-version }}
+        # run-checker prints "run=true" or "run=false"
+        run: python3 .github/run-checker.py $MAAS_VERSION `snap info maas | grep -w "$MAAS_VERSION:" | awk '{print $3}'` >> $GITHUB_OUTPUT
+      - name: Setup
+        if: ${{ steps.required.output.run }} == "true"        
+        env:
+          MAAS_VERSION: ${{ matrix.snap-version }}
+        run: make prepare
+      - name: Test
+        if: ${{ steps.required.output.run }} == "true"        
+        id: tests
+        run: make test
+      - name: Clean
+        if: ${{ steps.required.output.run }} == "true"        
+        continue-on-error: true        
+        run: make clean
+      - name: Update test results badges
+        if: ${{ steps.required.output.run }} == "true"
+        env:
+          MAAS_VERSION: ${{ matrix.snap-version }}
+          TEST_OUTCOME: ${{ steps.tests.outcome }}
+        run: |
+          python3 .github/update-badge.py $MAAS_VERSION "`snap info maas | grep -w "$MAAS_VERSION:" | awk '{print $2 " released at " $3 " tested at " strftime("%Y-%m-%d")}'`" $TEST_OUTCOME
+          git pull
+          git config --global user.name "r00ta bot"
+          git config --global user.email "r00tagithub@gmail.com"
+          git add .test-results
+          git commit -m '[AUTO] publish test results'
+          git push
+          
