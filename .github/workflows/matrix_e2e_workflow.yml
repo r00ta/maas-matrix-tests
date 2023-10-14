@@ -1,3 +1,4 @@
+name: MAAS matrix tests
 on:
   workflow_call:
 
