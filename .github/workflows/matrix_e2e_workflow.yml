@@ -1,6 +1,6 @@
 name: MAAS matrix tests
 on:
-  workflow_call:
+  workflow_dispatch:
 
 permissions:
   contents: write
