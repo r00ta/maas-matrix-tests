@@ -30,7 +30,7 @@ jobs:
         id: tests
         run: make test
       - name: Clean
-        if: steps.required.outputs.run == 'true'        
+        if: always()       
         continue-on-error: true        
         run: make clean
       - name: Update test results badges
