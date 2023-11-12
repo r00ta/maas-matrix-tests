@@ -25,8 +25,8 @@ check_maas_import() {
 mkdir -p /tmp/maas
 
 echo "Installing MAAS.."
-sudo snap install --channel=3.4/edge maas
-sudo snap install --channel=3.4/edge maas-test-db
+sudo snap install --channel=$MAAS_VERSION maas
+sudo snap install --channel=$MAAS_VERSION maas-test-db
 
 echo "Configuring MAAS.."
 sudo maas init region+rack --maas-url http://localhost:5240/MAAS --database-uri maas-test-db:/// 

@@ -1,8 +1,8 @@
 # Define the "prepare" target to depend on all the scripts
 prepare:
-	sudo ./install-steps/00-install-utils.sh
-	sudo ./install-steps/01-install-lxd.sh
-	sudo ./install-steps/02-install-maas.sh
+	sudo -E bash -c './install-steps/00-install-utils.sh'
+	sudo -E bash -c './install-steps/01-install-lxd.sh'
+	sudo -E bash -c './install-steps/02-install-maas.sh'
 
 # Clean up any temporary files created during execution
 clean:
