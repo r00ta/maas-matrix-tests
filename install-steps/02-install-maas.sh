@@ -10,7 +10,7 @@ retry_until_success() {
   local elapsed_time=0
 
   while [ $elapsed_time -lt $max_wait_time ]; do
-    output="$($maas_command)"
+    output=$(eval "$maas_command")
     if [ "$output" = "$status_to_check" ]; then
       echo "Success!"
       return 0  # Success
