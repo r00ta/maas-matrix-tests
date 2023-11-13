@@ -2,16 +2,17 @@
 
 set -x
 
-check_maas_import() {
+retry_until_success() {
   local maas_command="$1"
+  local status_to_check="$2"
   local max_wait_time=600
   local sleep_interval=10
   local elapsed_time=0
 
   while [ $elapsed_time -lt $max_wait_time ]; do
     output="$($maas_command)"
-    if [ "$output" = "false" ]; then
-      echo "Importing is complete."
+    if [ "$output" = "$status_to_check" ]; then
+      echo "Success!"
       return 0  # Success
     fi
     sleep $sleep_interval
@@ -36,10 +37,12 @@ sudo maas createadmin --username maas --password maas --email test@example.com
 sudo maas apikey --username=maas > /tmp/maas/api-key-file
 maas login admin http://localhost:5240/MAAS `cat /tmp/maas/api-key-file`
 maas admin boot-resources import
-check_maas_import "maas admin boot-resources is-importing" 300
+retry_until_success "maas admin boot-resources is-importing" "false"
 echo "Extracting primary rack.."
 export PRIMARY_RACK=$(maas admin rack-controllers read | jq -r ".[] | .system_id")
 maas admin rack-controller import-boot-images $PRIMARY_RACK
+retry_until_success "maas admin rack-controller list-boot-images $PRIMARY_RACK | jq -r .status" "synced"
+
 export SUBNET=12.0.1.0/24
 maas admin subnets create cidr=$SUBNET name=test-subnet
 echo "Extracting fabric id.."
