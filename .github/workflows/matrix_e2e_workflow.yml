@@ -34,7 +34,7 @@ jobs:
         continue-on-error: true        
         run: make clean
       - name: Update test results badges
-        if: steps.required.outputs.run == 'true'        
+        if: always() && steps.required.outputs.run == 'true'        
         env:
           MAAS_VERSION: ${{ matrix.snap-version }}
           TEST_OUTCOME: ${{ steps.tests.outcome }}
