@@ -13,7 +13,7 @@ MACHINE_SYSTEM_ID=`cat /tmp/maas/vm_system_id`
 
 IP_ADDRESS=$(maas admin machine read $MACHINE_SYSTEM_ID | jq -r .ip_addresses[0])
 
-ssh_result=$(ssh -o StrictHostKeyChecking=no ubuntu@$IP_ADDRESS -i /tmp/maas/id_rsa id)
+ssh_result=$(ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@$IP_ADDRESS -i /tmp/maas/id_rsa id)
 
 # Check if the result contains "ubuntu"
 if [[ $ssh_result == *"ubuntu"* ]]; then
