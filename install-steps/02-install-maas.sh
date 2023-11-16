@@ -24,6 +24,7 @@ retry_until_success() {
 }
 
 mkdir -p /tmp/maas
+chmod 777 /tmp/maas 
 
 echo "Installing MAAS.."
 sudo snap install --channel=$MAAS_VERSION maas
@@ -54,8 +55,33 @@ maas admin subnet update $SUBNET gateway_ip=12.0.1.1
 maas admin ipranges create type=dynamic start_ip=12.0.1.200 end_ip=12.0.1.254
 maas admin vlan update $FABRIC_ID $VLAN_TAG dhcp_on=True primary_rack=$PRIMARY_RACK
 maas admin maas set-config name=upstream_dns value=8.8.8.8
+
+export SUBNET=172.0.2.0/24
+echo "Extracting fabric id for baremetals.."
+export FABRIC_ID=$(maas admin subnet read "$SUBNET" | jq -r ".vlan.fabric_id")
+echo "Extracting vlan tag id for baremetals.."
+export VLAN_TAG=$(maas admin subnet read "$SUBNET" | jq -r ".vlan.vid")
+echo "Updating subnet.."
+maas admin subnet update $SUBNET gateway_ip=172.0.2.1
+maas admin ipranges create type=dynamic start_ip=172.0.2.200 end_ip=172.0.2.254
+maas admin ipranges create type=reserved start_ip=172.0.2.1 end_ip=172.0.2.10
+maas admin vlan update $FABRIC_ID $VLAN_TAG dhcp_on=True primary_rack=$PRIMARY_RACK
+m
+
+echo "Generaing ssh keys.."export SUBNET=172.0.2.0/24
+echo "Extracting fabric id for baremetals.."
+export FABRIC_ID=$(maas admin subnet read "$SUBNET" | jq -r ".vlan.fabric_id")
+echo "Extracting vlan tag id for baremetals.."
+export VLAN_TAG=$(maas admin subnet read "$SUBNET" | jq -r ".vlan.vid")
+echo "Updating subnet.."
+maas admin subnet update $SUBNET gateway_ip=172.0.2.1
+maas admin ipranges create type=dynamic start_ip=172.0.2.200 end_ip=172.0.2.254
+maas admin ipranges create type=reserved start_ip=172.0.2.1 end_ip=172.0.2.10
+maas admin vlan update $FABRIC_ID $VLAN_TAG dhcp_on=True primary_rack=$PRIMARY_RACK
+m
+
 ssh-keygen -q -t rsa -N "" -f "/tmp/maas/id_rsa"
 sudo chown r00ta:r00ta /tmp/id_rsa /tmp/maas/id_rsa.pub
-sudo chmod 600 /tmp/maas/id_rsa
-sudo chmod 644 /tmp/maas/id_rsa.pub
+sudo chmod 777 /tmp/maas/id_rsa
+sudo chmod 777 /tmp/maas/id_rsa.pub
 maas admin sshkeys create key="$(cat /tmp/maas/id_rsa.pub)"
