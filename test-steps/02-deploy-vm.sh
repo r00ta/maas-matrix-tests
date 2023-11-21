@@ -21,4 +21,4 @@ else
     exit 1
 fi
 
-echo "Machine has been deployed"
+echo "Machine has been deployed.. sleeping for 30 seconds"

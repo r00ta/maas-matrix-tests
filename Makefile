@@ -2,6 +2,7 @@ prepare:
 	sudo -E bash -c './install-steps/00-install-utils.sh'
 	sudo -E bash -c './install-steps/01-install-lxd.sh'
 	sudo -E bash -c './install-steps/02-install-maas.sh'
+	sudo -E bash -c './install-steps/03-configure-maas.sh'
 
 clean:
 	sudo ./clean-steps/02-clean-maas.sh
