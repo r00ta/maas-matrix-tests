@@ -57,7 +57,7 @@ export VLAN_TAG=$(maas admin subnet read "$SUBNET" | jq -r ".vlan.vid")
 echo "Updating subnet.."
 maas admin subnet update $SUBNET gateway_ip=172.0.2.1
 maas admin ipranges create type=dynamic start_ip=172.0.2.200 end_ip=172.0.2.254
-maas admin ipranges create type=reserved start_ip=172.0.2.1 end_ip=172.0.2.10
+maas admin ipranges create type=reserved start_ip=172.0.2.1 end_ip=172.0.2.20
 maas admin vlan update $FABRIC_ID $VLAN_TAG dhcp_on=True primary_rack=$PRIMARY_RACK
 
 echo "Generaing ssh keys.."
